@@ -6,8 +6,7 @@ Generate commit messages using [Ollama](https://ollama.com/).
 https://github.com/user-attachments/assets/69d2f627-2ca3-4b20-bf32-e4bdf5cd1cbc
 
 
-
-### Quick Start
+### Installation
 
 1.  Open the Command Palette and run `Package Control: Install Package` and install `NotMyCommitMessage`.
 2.  Install either [Git](https://packagecontrol.io/packages/Git) or [GitSavvy](https://packagecontrol.io/packages/GitSavvy). This enables the `Git: Commit` command in the Command Palette.
