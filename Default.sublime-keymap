@@ -1,0 +1,7 @@
+[
+    {
+        "keys": ["primary+c"],
+        "command": "nmcm_cancel_generate_message",
+        "context": [{"key": "nmcm.is_active"}]
+    }
+]

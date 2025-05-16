@@ -1,0 +1,40 @@
+{
+  "contributions": {
+    "settings": [
+      {
+        "file_patterns": [
+          "/Preferences.sublime-settings"
+        ],
+        "schema": {
+          "properties": {
+            "nmcm.ollama": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["model"],
+              "properties": {
+                "model": {
+                  "type": "string",
+                  "markdownDescription": "The model name, like `qwen2.5-coder`, `phi3.5`"
+                },
+                "url": {
+                  "type": "string",
+                  "default": "http://localhost:11434",
+                  "description": "The url where Ollama is running"
+                }
+              }},
+              "nmcm.commit_message_prompt": {
+                "type": "string",
+                "default": "Generate a short, concise and correct git commit message.",
+                "markdownDescription": "The prompt for the Ollama model."
+              },
+              "nmcm.active_in_selector": {
+                "type": "string",
+                "default": "text.git-commit | git-savvy.make-commit",
+                "markdownDescription": "The selector where the NMCM will be active."
+              },
+            }
+          }
+        }
+      ]
+  }
+}
