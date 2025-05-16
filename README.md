@@ -13,7 +13,7 @@ Generate commit messages using [Ollama](https://ollama.com/).
     ```
     You can find more models on the [Ollama website](https://ollama.com/search).
 5.  **Configure NMCM:** Open Sublime Text Preferences (`Preferences: Settings`) and add the following to your settings, replacing `"qwen2.5-coder"` with your chosen model:
-    ```json
+    ```js
     {
         "nmcm.ollama": {
             "model": "qwen2.5-coder"
