@@ -7,7 +7,7 @@ Generate commit messages using [Ollama](https://ollama.com/).
 1.  Open the Command Palette and run `Package Control: Install Package` and install `NotMyCommitMessage`.
 2.  Install either [Git](https://packagecontrol.io/packages/Git) or [GitSavvy](https://packagecontrol.io/packages/GitSavvy). This enables the `Git: Commit` command in the Command Palette.
 3.  Install [Ollama](https://ollama.com/). Once installed, Ollama should be running at `http://localhost:11434`. Open this link in your browser to verify.
-4.  Download an Ollama model (e.g., `qwen2.5-coder:7b`) by running:
+4.  Download an Ollama model (e.g. `qwen2.5-coder:7b`) by running:
     ```bash
     ollama run qwen2.5-coder:7b
     ```
