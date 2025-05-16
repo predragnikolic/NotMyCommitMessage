@@ -1,42 +1,36 @@
-# **NMCM** - NotMyCommitMessage
+# NMCM - NotMyCommitMessage
 
-Generate commit messages with [Ollama](https://ollama.com/).
+Generate commit messages using [Ollama](https://ollama.com/).
 
-### Getting started
+### Quick Start
 
-1. Open the command palette and run `Package Control: Install Package` and install `NotMyCommitMessage`.
-1. Install [Git](https://packagecontrol.io/packages/Git) or [GitSavvy](https://packagecontrol.io/packages/GitSavvy). After this step, a `Git: Commit` command will be available in the command palette.
-1. Install [Ollama](https://ollama.com/). After a successful installation Ollama will be running on `http://localhost:11434`. Open the link an verify that you see "Ollama is running".
-1. Download an Ollama [model](https://ollama.com/search) by run `ollama run MODEL_NAME` in the terminal, (for example `ollama run qwen2.5-coder:7b`)
-1. Open the command palette and run `Preferences: Settings`, and set the `MODEL_NAME` in the `"nmcm.ollama"`settings (other settings are optional):
-```
-{
-    // The selector where the NMCM will be active.
-    // [OPTIONAL] by default supports Git/GitSavvy commit view selectors
-    "nmcm.active_in_selector": "text.git-commit | git-savvy.make-commit",
+1.  Open the Command Palette run `Package Control: Install Package` and install `NotMyCommitMessage`.
+2.  Make sure you have either the [Git](https://packagecontrol.io/packages/Git) or [GitSavvy](https://packagecontrol.io/packages/GitSavvy) package installed in Sublime Text. This enables the `Git: Commit` command in the Command Palette.
+3.  Download and install [Ollama](https://ollama.com/). Once installed, Ollama should be running at `http://localhost:11434`. Open this link in your browser to verify.
+4.  **Download an Ollama Model:** In your terminal, download an Ollama model (e.g., `qwen2.5-coder:7b`) by running:
+    ```bash
+    ollama run qwen2.5-coder:7b
+    ```
+    You can find more models on the [Ollama website](https://ollama.com/search).
+5.  **Configure NMCM:** Open Sublime Text Preferences (`Preferences: Settings`) and add the following to your settings, replacing `"qwen2.5-coder"` with your chosen model:
+    ```json
+    {
+        "nmcm.ollama": {
+            "model": "qwen2.5-coder"
+        //  "url": "http://localhost:11434"
+        }
+        // Optional settings:
+        // "nmcm.active_in_selector": "text.git-commit | git-savvy.make-commit",
+        // "nmcm.commit_message_prompt": "Generate a short, concise and correct git commit message."
+    }
+    ```
 
-    // configure Ollama
-    "nmcm.ollama": {
-        // [REQUIRED] - The model name, like `qwen2.5-coder`, `phi3.5`
-        "model": "qwen2.5-coder",
-        // [OPTIONAL] default to - "http://localhost:11434". The url where Ollama is running
-        "url": "http://localhost:11434",
-    },
+### How to Use
 
-    // [OPTIONAL] default to - "Generate a short, concise and correct git commit message."
-    "nmcm.commit_message_prompt": "Generate a short, concise and correct git commit message. Please.",
-}
-```
+1.  Make your code changes in a Git repository.
+2.  Open the Command Palette and select `Git: Commit`.
+3.  In the commit message view, trigger autocomplete (`Ctrl+Space` or `Cmd+Space`). You should see `"Generate Message"`.
+4.  Select `"Generate Message"` to have NMCM create a commit message for you based on the diff.
+5.  To stop the message generation, press `Ctrl+C` (or `Cmd+C` on macOS).
 
-Done.
-
-### Usage
-
-1. Make a change in a get repo.
-2. Select `Git: Commit` from the command palette.
-3. Trigger autocomplete, you should see `"Generate Message"` completion item.
-4. Select it and you should see the messege being generated.
-5. To stop generating a commit message, press <kbd>primary</kbd> + <kbd>c</kbd>.
-
-> [!TIP]
-> If the git branch name contains a ticket id, NMCM will show the TICKET ID in the autocomplete as well.
+> ✨ **Tip:** If your Git branch name includes a ticket ID (like `feature/ABC-123`), NMCM will also suggest the ticket ID in the autocomplete.
