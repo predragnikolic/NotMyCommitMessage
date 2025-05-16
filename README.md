@@ -2,6 +2,11 @@
 
 Generate commit messages using [Ollama](https://ollama.com/).
 
+
+https://github.com/user-attachments/assets/69d2f627-2ca3-4b20-bf32-e4bdf5cd1cbc
+
+
+
 ### Quick Start
 
 1.  Open the Command Palette and run `Package Control: Install Package` and install `NotMyCommitMessage`.
@@ -36,3 +41,5 @@ Generate commit messages using [Ollama](https://ollama.com/).
 
 > [!TIP]
 > If your Git branch name includes a ticket ID (like `feature/ABC-123`), NMCM will also suggest the ticket ID in the autocomplete.
+
+
