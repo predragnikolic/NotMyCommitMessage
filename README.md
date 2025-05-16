@@ -28,10 +28,11 @@ Generate commit messages using [Ollama](https://ollama.com/).
 ### How to Use
 
 1.  Make your code changes in a Git repository.
-2.  Open the Command Palette and select `Git: Commit`.
-3.  In the commit message view, trigger autocomplete (`Ctrl+Space` or `Cmd+Space`). You should see `"Generate Message"`.
-4.  Select `"Generate Message"` to have NMCM create a commit message for you based on the diff.
-5.  To stop the message generation, press `Ctrl+C` (or `Cmd+C` on macOS).
+2.  Open the Command Palette and stage changes with `Git: Add`.
+3.  Open the Command Palette, select `Git: Commit` to open the commit message view.
+4.  In the commit message view, trigger autocomplete (`Ctrl+Space` or `Cmd+Space`). You should see `"Generate Message"`.
+5.  Select `"Generate Message"` to have NMCM create a commit message for you based on the diff.
+6.  To stop the message generation, press `Ctrl+C` (or `Cmd+C` on macOS).
 
 > [!TIP]
 > If your Git branch name includes a ticket ID (like `feature/ABC-123`), NMCM will also suggest the ticket ID in the autocomplete.
