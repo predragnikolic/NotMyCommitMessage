@@ -114,7 +114,7 @@ def stream_response(view:sublime.View, prompt: str, stop_event: threading.Event)
         return
     try:
         LAST_GENERATED_TEXT = ''
-        last_point = view.find_by_class(get_point(view) or 0, False, sublime.PointClassification.LINE_START)
+        last_point = get_point(view) or 0
         with ActivityIndicator(w, f'Generating commit message'):
             for text_chunk in stream('post', f"{Ollama.url}/api/generate", payload, stop_event):
                 LAST_GENERATED_TEXT+=text_chunk
