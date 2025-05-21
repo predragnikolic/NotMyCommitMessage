@@ -53,6 +53,6 @@ class Git:
         output, _ = p.communicate()
         if p.returncode == 1:
             decoded_error = output.decode('utf-8')
-            print(f'NMCM: An error happened while running this command "{cmd}".', decoded_error)
+            print(f'NotMyCommitMessage: An error happened while running this command "{cmd}".', decoded_error)
             raise Exception(f'NMCM: An error happened while running this command "{cmd}". {decoded_error}')
         return output.decode('utf-8')
