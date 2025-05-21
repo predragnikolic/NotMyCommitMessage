@@ -4,6 +4,7 @@ import sublime_plugin
 import sublime
 import json
 import threading
+from sublime_lib import ActivityIndicator
 
 from .core.git_commands import Git
 import requests
@@ -100,14 +101,17 @@ def stream_response(view:sublime.View, prompt: str, stop_event: threading.Event)
     try:
         LAST_GENERATED_TEXT = ''
         last_point = view.find_by_class(get_point(view) or 0, False, sublime.PointClassification.LINE_START)
-        for text_chunk in stream('post', f"{Ollama.url}/api/generate", payload, stop_event):
-            LAST_GENERATED_TEXT+=text_chunk
-            view.run_command("nmcm_insert_text", {
-                'characters': text_chunk,
-                'last_point': last_point,
-            })
-            last_point += len(text_chunk)
-
+        w = view.window()
+        if not w:
+            return
+        with ActivityIndicator(w, f'Generating commit message'):
+            for text_chunk in stream('post', f"{Ollama.url}/api/generate", payload, stop_event):
+                LAST_GENERATED_TEXT+=text_chunk
+                view.run_command("nmcm_insert_text", {
+                    'characters': text_chunk,
+                    'last_point': last_point,
+                })
+                last_point += len(text_chunk)
     except requests.exceptions.RequestException as e:
         print(f"Error connecting to Ollama API: {e}")
         return
