@@ -30,9 +30,9 @@ class IsOllamaInstalled(sublime_plugin.EventListener):
         Ollama.model = ollama_settings.get('model', '')
         res = requests.get(Ollama.url)
         if res.status_code != 200:
-            print(f'NMCM: Ollama is not running on {Ollama.url}.')
+            print(f'NotMyCommitMessage: Ollama is not running on {Ollama.url}.')
             return
-        print(f'NMCM: Ollama is running on {Ollama.url}.')
+        print(f'NotMyCommitMessage: Ollama is running on {Ollama.url}.')
         # list models available locally
         res = requests.get(f"{Ollama.url}/api/tags")
 
@@ -50,9 +50,9 @@ class IsOllamaInstalled(sublime_plugin.EventListener):
 
         available_models = [strip_after_colon(model['name']) for model in res.json()['models']]
         if Ollama.model not in available_models:
-            print(f'NMCM: Model "{Ollama.model}" not found.\n\tUse one of the available models: {available_models}\n\tand set it in Preferences.sublime-settings: `"nmcm.ollama": {{ "model": "MODEL" }}`')
+            print(f'NotMyCommitMessage: Model "{Ollama.model}" not found.\n\tUse one of the available models: {available_models}\n\tand set it in Preferences.sublime-settings: `"nmcm.ollama": {{ "model": "MODEL" }}`')
             return
-        print(f'NMCM: Model "{Ollama.model} is used."')
+        print(f'NotMyCommitMessage: Model "{Ollama.model} is used."')
         Ollama.is_installed = True
 
 
