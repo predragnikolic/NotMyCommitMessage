@@ -1,5 +1,6 @@
 from __future__ import annotations
 import subprocess
+from typing import Literal
 import sublime
 
 class Git:
@@ -22,6 +23,22 @@ class Git:
 
     def diff_staged(self) -> str:
         cmd = ['git diff --staged --diff-filter=M']
+        return self.run(cmd)
+
+    def diff_staged_file_names_by_filter(self, diff_filter: Literal['A', 'C', 'D', 'M', 'R', 'T', 'U', 'X', 'B']) -> str:
+        """
+        A Added
+        C Copied
+        D Deleted
+        M Modified
+        R Renamed
+        T have their type (mode) changed
+        U Unmerged
+        X Unknown
+        B have had their pairing Broken
+        * All-or-none
+        """
+        cmd = [f'git diff --name-only --staged --diff-filter={diff_filter}']
         return self.run(cmd)
 
     def run(self, cmd: list[str]) -> str:
