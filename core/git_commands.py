@@ -17,11 +17,11 @@ class Git:
         return self.run(cmd)
 
     def diff_all_changes(self) -> str:
-        cmd = ['git diff']
+        cmd = ['git diff --diff-filter=M']
         return self.run(cmd)
 
     def diff_staged(self) -> str:
-        cmd = ['git diff --staged']
+        cmd = ['git diff --staged --diff-filter=M']
         return self.run(cmd)
 
     def run(self, cmd: list[str]) -> str:

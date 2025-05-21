@@ -4,9 +4,9 @@ import sublime_plugin
 import sublime
 import json
 import threading
-from sublime_lib import ActivityIndicator
 
 from .core.git_commands import Git
+from .core.activity_indicator import ActivityIndicator
 import requests
 
 
@@ -75,9 +75,21 @@ class NmcmGenerateMessageCommand(sublime_plugin.TextCommand):
             return
         git = Git(w)
         staged_diff = git.diff_staged() or git.diff_all_changes()
+        added_files = git.diff_staged_file_names_by_filter('A')
+        deleted_files = git.diff_staged_file_names_by_filter('D')
+        renamed_files = git.diff_staged_file_names_by_filter('R')
         user_prompt = self.view.settings().get("nmcm.commit_message_prompt") or "Generate a short, concise and correct git commit message."
         prompt = f"""{user_prompt}
-The git diff is:
+Added files:
+{added_files or "/"}
+
+Deleted files:
+{deleted_files or '/'}
+
+Renamed files:
+{renamed_files or '/'}
+
+Git diff of changed files is:
 {staged_diff}
 """
         # If a previous request is running, stop it
@@ -90,7 +102,6 @@ The git diff is:
         t = threading.Thread(target=stream_response, args=(self.view, prompt, stop_event))
         t.start()
 
-
 def stream_response(view:sublime.View, prompt: str, stop_event: threading.Event):
     global LAST_GENERATED_TEXT
     payload = {
@@ -98,12 +109,12 @@ def stream_response(view:sublime.View, prompt: str, stop_event: threading.Event)
         "prompt": prompt,
         "stream": True,
     }
+    w = view.window()
+    if not w:
+        return
     try:
         LAST_GENERATED_TEXT = ''
         last_point = view.find_by_class(get_point(view) or 0, False, sublime.PointClassification.LINE_START)
-        w = view.window()
-        if not w:
-            return
         with ActivityIndicator(w, f'Generating commit message'):
             for text_chunk in stream('post', f"{Ollama.url}/api/generate", payload, stop_event):
                 LAST_GENERATED_TEXT+=text_chunk
@@ -113,7 +124,7 @@ def stream_response(view:sublime.View, prompt: str, stop_event: threading.Event)
                 })
                 last_point += len(text_chunk)
     except requests.exceptions.RequestException as e:
-        print(f"Error connecting to Ollama API: {e}")
+        w.status_message(f'Generating commit message FAILED')
         return
 
 
@@ -124,11 +135,11 @@ class NmcmInsertTextCommand(sublime_plugin.TextCommand):
 
 def stream(method: Literal['get', 'post'], url: str, data: dict, stop_event: threading.Event | None=None) -> Iterator[str]:
     headers = {"Content-Type": "application/json"}
-    with requests.request(method, url, json=data, headers=headers, stream=True, timeout=10) as response:
+    with requests.request(method, url, json=data, headers=headers, stream=True, timeout=3) as response:
         response.raise_for_status()
         for chunk in response.iter_lines():
             if stop_event and stop_event.is_set():
-                break
+                return
             if chunk:
                 try:
                     chunk_text = chunk.decode("utf-8")
@@ -137,7 +148,7 @@ def stream(method: Literal['get', 'post'], url: str, data: dict, stop_event: thr
                     yield text
                 except json.JSONDecodeError:
                     print("Failed to decode JSON chunk:", chunk)
-                    break
+                    return
 
 
 def get_point(view: sublime.View) -> int | None:
